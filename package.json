@@ -1,0 +1,19 @@
+{
+  "name": "lambda-cors-proxy",
+  "version": "0.0.1",
+  "description": "Flexible AWS Lambda proxy server",
+  "main": "handler.ts",
+  "author": "Paul Annekov",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.17",
+    "@types/node-fetch": "^2.3.5",
+    "serverless": "1.44.1",
+    "serverless-offline": "5.2.1",
+    "serverless-plugin-typescript": "1.1.7"
+  },
+  "dependencies": {
+    "lodash": "4.17.11",
+    "node-fetch": "2.6.0"
+  }
+}

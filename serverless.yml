@@ -1,0 +1,45 @@
+service: cors-proxy
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+custom: ${file(serverless.vars.yml)}
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  usagePlan: ${self:custom.usagePlan}
+
+functions:
+  proxy:
+    handler: handler.proxy
+    environment:
+      TIMEOUT: ${self:custom.proxyTimeout, ''}
+      CORS_ORIGIN: ${self:custom.cors.origin, ''}
+      CORS_CREDENTIALS: ${self:custom.cors.allowCredentials, ''}
+    events:
+      - http:
+          path: ''
+          method: get
+          cors: ${self:custom.cors, '1'}
+      - http:
+          path: ''
+          method: post
+          cors: ${self:custom.cors, '1'}
+      - http:
+          path: ''
+          method: head
+          cors: ${self:custom.cors, '1'}
+      - http:
+          path: ''
+          method: put
+          cors: ${self:custom.cors, '1'}
+      - http:
+          path: ''
+          method: patch
+          cors: ${self:custom.cors, '1'}
+      - http:
+          path: ''
+          method: delete
+          cors: ${self:custom.cors, '1'}

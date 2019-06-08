@@ -1,0 +1,5 @@
+.serverless
+.build
+.vscode
+node_modules
+serverless.vars.yml

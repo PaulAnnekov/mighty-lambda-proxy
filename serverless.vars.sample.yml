@@ -1,0 +1,11 @@
+usagePlan:
+  quota:
+    limit: 1000000
+    period: MONTH
+
+cors:
+  # 'origins' property is currently not supported. 
+  origin: 'https://my-only-allowed-origin.example'
+  allowCredentials: true
+
+proxyTimeout: 5000
