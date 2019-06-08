@@ -20,8 +20,7 @@ just add `?url=[target]` in the end, e.g.:
 
 By default function asks Lambda service for timeout value 
 ([getRemainingTimeInMillis()](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html)). But you can
-specify your own timeout value by following
-[Set usagePlan, CORS settings, proxy timeout](#set-usageplan-cors-settings-proxy-timeout) guide.
+specify your own timeout value by following "Set usagePlan, CORS settings, proxy timeout" guide below.
 
 ## Configure
 
