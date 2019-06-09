@@ -1,5 +1,5 @@
 {
-  "name": "lambda-cors-proxy",
+  "name": "mighty-lambda-proxy",
   "version": "0.0.1",
   "description": "Flexible AWS Lambda proxy server",
   "main": "handler.ts",
@@ -11,11 +11,11 @@
     "serverless": "1.44.1",
     "serverless-apigw-binary": "0.4.4",
     "serverless-offline": "5.2.1",
-    "serverless-plugin-typescript": "1.1.7"
+    "serverless-plugin-typescript": "1.1.7",
+    "serverless-plugin-encode-env-var-objects": "1.1.0"
   },
   "dependencies": {
     "lodash": "4.17.11",
-    "node-fetch": "2.6.0",
-    "serverless-plugin-encode-env-var-objects": "1.1.0"
+    "node-fetch": "2.6.0"
   }
 }
