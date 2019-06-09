@@ -1,6 +1,20 @@
+// Why node-fetch?
+// request - doesn't support promises out of the box
+// axios - removes "Content-Encoding" header which leads to wrong proxy response: https://github.com/axios/axios/pull/2211
+// got - too high-level, can't find where to get response status code
 import fetch, { Response } from 'node-fetch';
 import * as _ from 'lodash';
 import { APIGatewayProxyHandler } from 'aws-lambda';
+import * as http from 'http';
+import * as https from 'https';
+import { URL } from 'url';
+
+const httpAgent = new http.Agent({keepAlive: true});
+const httpsAgent = new https.Agent({keepAlive: true});
+
+function agent(_parsedURL: URL) {
+    return _parsedURL.protocol == 'http:' ? httpAgent : httpsAgent;
+}
 
 export const proxy: APIGatewayProxyHandler = async (event, context) => {
     const params = event.queryStringParameters;
@@ -16,20 +30,18 @@ export const proxy: APIGatewayProxyHandler = async (event, context) => {
     }
     let res: Response;
     try {
-        const timeout = +process.env.TIMEOUT ||
+        const timeout = process.env.TIMEOUT ? +process.env.TIMEOUT :
             // Reserve 100ms to handle error.
             context.getRemainingTimeInMillis() - 100;
+        // @ts-ignore: Outdated definitions for node-fetch https://github.com/DefinitelyTyped/DefinitelyTyped/pull/36057
         res = await fetch(params.url, {
             method: event.httpMethod,
-            // Mimics nginx proxy behavior https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/#headers.
-            headers: {
-                ..._.omit(event.headers, 'Host'),
-                Connection: 'close'
-            },
-            // TODO: looks like it's base64 encoded body
-            body: event.body,
+            headers: _.omit(event.headers, 'Host'),
+            body: event.body ? Buffer.from(event.body, 'base64') : '',
             timeout,
-            compress: false
+            compress: false,
+            // @ts-ignore: Outdated definitions for node-fetch https://github.com/DefinitelyTyped/DefinitelyTyped/pull/36057
+            agent
         });
     } catch (e) {
         console.log(`<-- proxy error: ${e}`);
@@ -43,7 +55,7 @@ export const proxy: APIGatewayProxyHandler = async (event, context) => {
     console.log(`<-- proxy response: ${res.status}`);
     const corsConfig = {
         origin: process.env.CORS_ORIGIN || '*',
-        credentials: process.env.CORS_CREDENTIALS ? 'true' : undefined
+        credentials: !!process.env.CORS_CREDENTIALS
     }
 
     const headers = {};
