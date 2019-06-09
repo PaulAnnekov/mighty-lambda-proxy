@@ -1,12 +1,13 @@
-# Lambda CORS proxy
+# Mighty Lambda proxy
 
-Flexible AWS Lambda proxy server which enables CORS for endpoints which don't allow cross-origin requests.
+Flexible AWS Lambda proxy server. Unlike other solutions, it supports any request/response payload (gzip, br,
+image, xml, json, etc.). Also you can easily enable CORS for endpoints which don't allow cross-origin requests.
 
 ## How to use
 
 ```
-git clone https://github.com/PaulAnnekov/lambda-cors-proxy.git
-cd cors-proxy
+git clone https://github.com/PaulAnnekov/mighty-lambda-proxy.git
+cd mighty-lambda-proxy
 npm install
 npx serverless deploy -v # or node_modules/.bin/serverless deploy -v
 ```
