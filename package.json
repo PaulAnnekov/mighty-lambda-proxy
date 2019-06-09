@@ -2,9 +2,14 @@
   "name": "mighty-lambda-proxy",
   "version": "0.0.1",
   "description": "Flexible AWS Lambda proxy server",
-  "main": "handler.ts",
+  "main": "handler.js",
   "author": "Paul Annekov",
   "license": "MIT",
+  "homepage": "https://github.com/PaulAnnekov/mighty-lambda-proxy",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulAnnekov/mighty-lambda-proxy.git"
+  },
   "devDependencies": {
     "@types/aws-lambda": "8.10.17",
     "@types/node-fetch": "2.3.5",
@@ -12,7 +17,8 @@
     "serverless-apigw-binary": "0.4.4",
     "serverless-offline": "5.2.1",
     "serverless-plugin-typescript": "1.1.7",
-    "serverless-plugin-encode-env-var-objects": "1.1.0"
+    "serverless-plugin-encode-env-var-objects": "1.1.0",
+    "typescript": "3.4.1"
   },
   "dependencies": {
     "lodash": "4.17.11",
