@@ -37,7 +37,7 @@ export const proxy: APIGatewayProxyHandler = async (event, context) => {
         res = await fetch(params.url, {
             method: event.httpMethod,
             headers: _.omit(event.headers, 'Host'),
-            body: event.body ? Buffer.from(event.body, 'base64') : '',
+            body: event.body ? Buffer.from(event.body, 'base64') : null,
             timeout,
             compress: false,
             // @ts-ignore: Outdated definitions for node-fetch https://github.com/DefinitelyTyped/DefinitelyTyped/pull/36057
@@ -53,19 +53,16 @@ export const proxy: APIGatewayProxyHandler = async (event, context) => {
     }
 
     console.log(`<-- proxy response: ${res.status}`);
-    const corsConfig = {
-        origin: process.env.CORS_ORIGIN || '*',
-        credentials: !!process.env.CORS_CREDENTIALS
-    }
-
-    const headers = {};
-    res.headers.forEach((value, key) => headers[key] = value);
+    const corsHeaders: {} = process.env.IS_CORS ? {
+        'Access-Control-Allow-Origin': process.env.CORS_ORIGIN || '*',
+        'Access-Control-Allow-Credentials': !!process.env.CORS_CREDENTIALS
+    } : {};
+    
+    const resHeaders = {};
+    res.headers.forEach((value, key) => resHeaders[key] = value);
     const proxyResponse = {
         statusCode: res.status,
-        headers: {...headers, ...{
-            'Access-Control-Allow-Origin': corsConfig.origin,
-            'Access-Control-Allow-Credentials': corsConfig.credentials
-        }},
+        headers: {...resHeaders, ...corsHeaders},
         body: (await res.buffer()).toString('base64'),
         isBase64Encoded: true
     };

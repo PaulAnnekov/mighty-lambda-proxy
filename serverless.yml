@@ -1,51 +1,52 @@
-service: cors-proxy
+service: mighty-proxy
 
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
   - serverless-apigw-binary
+  - serverless-plugin-encode-env-var-objects
 
 custom: 
   apigwBinary:
     types:
       - '*/*'
-
-mightyVars: ${file(serverless.vars.yml)}
+  mightyVars: ${file(serverless.vars.yml)}
 
 provider:
   name: aws
   runtime: nodejs10.x
-  usagePlan: ${self:mightyVars.usagePlan}
+  usagePlan: ${self:custom.mightyVars.usagePlan}
 
 functions:
   proxy:
     handler: handler.proxy
     environment:
-      TIMEOUT: ${self:mightyVars.proxyTimeout, ''}
-      CORS_ORIGIN: ${self:mightyVars.cors.origin, ''}
-      CORS_CREDENTIALS: ${self:mightyVars.cors.allowCredentials, ''}
+      TIMEOUT: ${self:custom.mightyVars.proxyTimeout, ''}
+      IS_CORS: ${self:custom.mightyVars.cors, ''}
+      CORS_ORIGIN: ${self:custom.mightyVars.cors.origin, ''}
+      CORS_CREDENTIALS: ${self:custom.mightyVars.cors.allowCredentials, ''}
     events:
       - http:
           path: ''
           method: get
-          cors: ${self:mightyVars.cors, ''}
+          cors: ${self:custom.mightyVars.cors, ''}
       - http:
           path: ''
           method: post
-          cors: ${self:mightyVars.cors, ''}
+          cors: ${self:custom.mightyVars.cors, ''}
       - http:
           path: ''
           method: head
-          cors: ${self:mightyVars.cors, ''}
+          cors: ${self:custom.mightyVars.cors, ''}
       - http:
           path: ''
           method: put
-          cors: ${self:mightyVars.cors, ''}
+          cors: ${self:custom.mightyVars.cors, ''}
       - http:
           path: ''
           method: patch
-          cors: ${self:mightyVars.cors, ''}
+          cors: ${self:custom.mightyVars.cors, ''}
       - http:
           path: ''
           method: delete
-          cors: ${self:mightyVars.cors, ''}
+          cors: ${self:custom.mightyVars.cors, ''}
