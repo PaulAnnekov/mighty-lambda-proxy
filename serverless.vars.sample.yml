@@ -7,5 +7,9 @@ cors:
   # 'origins' property is currently not supported. 
   origin: 'https://my-only-allowed-origin.example'
   allowCredentials: true
+  headers:
+    - Content-Type
+    - Authorization
+    - X-My-Unique-Header
 
 proxyTimeout: 5000
